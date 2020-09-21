@@ -62,6 +62,6 @@ stdenv.mkDerivation {
       - Create a new openframeworks project in Qt Creator. When prompted for your openframeworks folder, selected where you placed it.
       A cleaner package bundled with qtcreator is in the works.
     '';
-    homepage = "https://openframeworks.cc/download/"
-  }
+    homepage = "https://openframeworks.cc/download/";
+  };
 }

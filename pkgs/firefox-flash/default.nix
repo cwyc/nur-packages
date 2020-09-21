@@ -34,7 +34,7 @@ in
     '';
     meta = {
       description = "Firefox with flash enabled and behind a selinux sandbox, for playing old flash games without risking your everyday browser.";
-      platforms = [ platforms.linux ];
+      platforms = with stdenv.lib.platforms; [ linux ];
       broken = true;
     };
   }
