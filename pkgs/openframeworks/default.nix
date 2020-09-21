@@ -1,4 +1,4 @@
-{lib, stdenv, fetchurl, 
+{lib, stdenv, fetchurl, buildProjectGenerator ? false,
 pkg-config, bash,
 opencv, gcc, openal, glew, freeglut, freeimage, gst_all_1,  
 cairo, libudev0-shim, freetype, fontconfig, libsndfile, curl, libcardiacarrest, alsaLib, udev,
@@ -36,7 +36,7 @@ stdenv.mkDerivation {
   	sed -i -E 's/#include "RtAudio\.h"/#include "rtaudio\/RtAudio\.h"/' $out/libs/openFrameworks/sound/ofRtAudioSoundStream.cpp;
   	
   	substituteInPlace $out/scripts/linux/compileOF.sh --replace "/usr/bin/env bash" "${bash}/bin/bash"
-  	substituteInPlace $out/scripts/linux/compilePG.sh --replace "/bin/bash" "${bash}/bin/bash"
+  	${if buildProjectGenerator then "" else "#"}substituteInPlace $out/scripts/linux/compilePG.sh --replace "/bin/bash" "${bash}/bin/bash"
   '';
   
   dontConfigure = true;
@@ -44,18 +44,18 @@ stdenv.mkDerivation {
   buildPhase = ''
     cd $out
     $out/scripts/linux/compileOF.sh -j $NIX_BUILD_CORES
-    $out/scripts/linux/compilePG.sh -j $NIX_BUILD_CORES
+    ${if buildProjectGenerator then "" else "#"}$out/scripts/linux/compilePG.sh -j $NIX_BUILD_CORES
   '';
   dontInstall = true;
   dontFixup = true;
 
   meta = {
+    description = "A toolkit for graphics and computational art.";
     longDescription = ''
-      The openframeworks graphics toolkit.
-      Don't install it to your nix profile; for some stupid reason it doesn't like being installed.
+      Don't install it to your nix profile; it *just can't* be installed.
       To set it up for development use:
       - nix-build it to a safe place in your home folder: 
-        mkdir -p ~/opt/openframeworks; nix-build '<nixpkgs>' -A openframeworks 
+        mkdir -p ~/opt/; nix-build '<nixpkgs>' -A nur.repos.cwyc.openframeworks -o ~/opt/openframeworks
       - Install Qt Creator
       - Run the script to install the Qt Creator plugin to your ~/.config folder:
         [OF DIRECTORY]/scripts/qtcreator/install_template.sh
@@ -63,5 +63,7 @@ stdenv.mkDerivation {
       A cleaner package bundled with qtcreator is in the works.
     '';
     homepage = "https://openframeworks.cc/download/";
+    license = stdenv.lib.licenses.mit;
+    meta.platforms = stdenv.lib.platforms.linux;
   };
 }
