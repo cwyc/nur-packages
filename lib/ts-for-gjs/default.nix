@@ -6,19 +6,22 @@
 	ignore ? [], #names of the modules not to generate
 	prettify ? true, #whether to prettify the output typescript files
 	environment ? "both" #"gjs" for gjs runtime, "node" for node-gtk runtime, or "both" for both
+	maxLoaded ? -1 #this derivation can split up the specified module into multiple jobs (if modules is not null), since this script has the tendency to run out of memory on travis ci
 }:
 let
 	nodeDependencies = (callPackage ./package/default.nix {}).shell.nodeDependencies;
+
+	modulesString = 
+		if (modules == null)
+			then "null"
+			else builtins.concatStringsSep " " modules;
+
 	librariesString = 
 		builtins.concatStringsSep 
 			" " 
 			(map 
 				(path: "-g " + path) 
 				sources);
-	namesString = 
-		if (modules == null)
-			then "\"*\""
-			else builtins.concatStringsSep " " modules;
 	ignoreString =
 		builtins.concatStringsSep 
 			" " 
@@ -30,6 +33,7 @@ let
 		else if environment == "node" then "-e node"
 		else if environment == "both" then ""
 		else throw environment + '' must be "gjs", "node", or "both"'';
+	optionsString = "${librariesString} ${if prettify then "--pretty" else ""} ${environmentString} ${ignoreString} --ignoreConflicts"
 in 
 lib.makeOverridable stdenv.mkDerivation {
 	name = name;
@@ -47,7 +51,7 @@ lib.makeOverridable stdenv.mkDerivation {
 		export PATH="${nodeDependencies}/bin:$PATH"
 
 		mkdir -p $out
-		npm run start -- generate ${namesString} ${librariesString} -o $out ${if prettify then "--pretty" else ""} ${environmentString} --ignoreConflicts
+		${python3}/bin/python3 ${./splitwork.py} $out ${maxLoaded} "${optionsString}" "${modulesString}"
 	'';
 	dontInstall = true;
 	dontFixup = true;

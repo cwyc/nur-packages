@@ -12,6 +12,7 @@ in
 (ts-for-gjs {
 	name = "gtk-typescript-defs";
 	sources = [(girs + "/gir-1.0")];
+	maxLoaded = 1;
 }).override {
 	meta = {
 		description = "A set of typescript definitions for coding with gtk. Built from https://github.com/sammydre/ts-for-gjs";
