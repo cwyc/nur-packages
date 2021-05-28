@@ -17,5 +17,6 @@ in
 	meta = {
 		description = "A set of typescript definitions for coding with gtk. Built from https://github.com/sammydre/ts-for-gjs";
 		license = lib.licenses.lgpl2Plus;
+		broken = true;
 	};
 }
