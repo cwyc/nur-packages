@@ -29,7 +29,7 @@ let
 		if environment == "gjs" then "-e gjs"
 		else if environment == "node" then "-e node"
 		else if environment == "both" then ""
-		else throw environment + '' must be "gjs", "node", or "both"'';
+		else throw ''"environment" must be "gjs", "node", or "both"'';
 in 
 lib.makeOverridable stdenv.mkDerivation {
 	name = name;
