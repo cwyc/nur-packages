@@ -72,5 +72,6 @@ stdenv.mkDerivation {
     homepage = "https://openframeworks.cc/download/";
     license = stdenv.lib.licenses.mit;
     meta.platforms = stdenv.lib.platforms.linux;
+    broken = true;
   };
 }
