@@ -21,5 +21,6 @@
   openframeworks = pkgs.callPackage ./pkgs/openframeworks {};
   antimony = pkgs.callPackage ./pkgs/antimony {};
   gtk-typescript-defs = pkgs.callPackage ./pkgs/gtk-typescript-defs.nix {};
+  calligra = pkgs.callPackage ./pkgs/calligra {};
 }
 
