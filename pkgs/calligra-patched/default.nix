@@ -1,5 +1,5 @@
 {calligra, fetchFromGitHub}:
-calligra.overrideAttrs {
+calligra.overrideAttrs (old: {
 	src = fetchFromGitHub {
 		owner = "cwyc";
 		repo = "calligra";
@@ -8,4 +8,4 @@ calligra.overrideAttrs {
 		fetchSubmodules = true;
 	};
 	meta.description = "My patches to the calligra office suite";
-}
+})
