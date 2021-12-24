@@ -33,22 +33,14 @@ let
 in 
 lib.makeOverridable stdenv.mkDerivation {
 	name = name;
-	src = fetchFromGitHub {
-      owner = "sammydre";
-      repo = "ts-for-gjs";
-      rev = "6e2ad562a5df18ef4e1667ef4dd6dfbe2ef77cc9";
-      sha256 = "0m6wbasr4pahwn4cr3c25p6f3xv697zygnih1p8y0n9m7x8zssnd";
-      fetchSubmodules = true;
-    };
+
 	buildInputs = [nodejs python3 automake];
 	buildPhase = ''
-
 		ln -s ${nodeDependencies}/lib/node_modules ./node_modules
-		export PATH="${nodeDependencies}/bin:$PATH"
-
-		mkdir -p $out
-		npm run start -- generate ${namesString} ${librariesString} -o $out ${if prettify then "--pretty" else ""} ${environmentString} --ignoreConflicts
+	    export PATH="${nodeDependencies}/bin:$PATH"
+		ts-for-gir generate ${namesString} ${librariesString} -o $out ${if prettify then "--pretty" else ""} ${environmentString} --ignoreConflicts
 	'';
+	dontUnpack = true;
 	dontInstall = true;
 	dontFixup = true;
 	dontCopyDist = true;
