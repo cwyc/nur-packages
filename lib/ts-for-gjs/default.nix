@@ -34,12 +34,12 @@ in
 lib.makeOverridable stdenv.mkDerivation {
 	name = name;
 	src = fetchFromGitHub {
-		owner="sammydre";
-		repo="ts-for-gjs";
-		rev="e1fdadbe3a4de45ce812ba07382c17efa839b702";
-		sha256="0fqdd1r5b0arhiy1af673pp6imgm4016x97jgkib7ndndg03a9r6";
-		fetchSubmodules=false;
-	};
+      owner = "sammydre";
+      repo = "ts-for-gjs";
+      rev = "6e2ad562a5df18ef4e1667ef4dd6dfbe2ef77cc9";
+      sha256 = "0m6wbasr4pahwn4cr3c25p6f3xv697zygnih1p8y0n9m7x8zssnd";
+      fetchSubmodules = true;
+    };
 	buildInputs = [nodejs python3 automake];
 	buildPhase = ''
 
